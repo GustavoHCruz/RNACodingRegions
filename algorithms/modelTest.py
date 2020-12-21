@@ -33,8 +33,7 @@ while(i < 5200):
 
     for seq in introns[i]:
         saida = model.predict([{'sequence':seq[0]}])
-        saida = saida[0]
-        saida = str(saida[0])
+        saida = str(saida[0][0])
         correto = str(seq[-1])
         if ("Intron" == correto):
             total[tipos[correto]] += 1
@@ -52,6 +51,6 @@ while(i < 5200):
 for i in range(0,len(acuracia)):
     acuracia[i] = (acertos[i]/total[i]) * 100
 
-print("Acurácia de Exons:",acuracia[0],"Total:",total[0],"Acertos:",acertos[0])
-print("Acurácia de Introns:",acuracia[1],"Total:",total[1],"Acertos:",acertos[1])
-print("Acurácia de Neithers:",acuracia[2],"Total:",total[2],"Acertos:",acertos[2])
+print("Acurácia de Exons:",acuracia[0],"Total:",int(total[0]),"Acertos:",int(acertos[0]))
+print("Acurácia de Introns:",acuracia[1],"Total:",int(total[1]),"Acertos:",int(acertos[1]))
+print("Acurácia de Neithers:",acuracia[2],"Total:",int(total[2]),"Acertos:",int(acertos[2]))

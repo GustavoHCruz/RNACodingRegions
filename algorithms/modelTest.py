@@ -9,48 +9,48 @@ data = pickle.load(file)
 exons = data[0]
 introns = data[1]
 
-acertos = [0.0,0.0,0.0]
+hits = [0.0,0.0,0.0]
 total = [0.0,0.0,0.0]
-acuracia = [0.0,0.0,0.0]
-tipos = {"Exon":0,"Intron":1,"Neither":2}
+accuracy = [0.0,0.0,0.0]
+types = {"Exon":0,"Intron":1,"Neither":2}
 
 i=0
 while(i < 5200):
     for seq in exons[i]:
-        saida = model.predict([{'sequence':seq[0]}])
-        saida = str(saida[0][0])
-        correto = str(seq[-1])
-        if ("Exon" == correto):
-            total[tipos[correto]] += 1
-            if(correto == saida):
-                acertos[tipos[correto]] += 1
-        if ("Neither" == correto):
-            total[tipos[correto]] += 1
-            if(correto == saida):
-                acertos[tipos[correto]] += 1            
-        # print("Sendo testado:", seq[0],"\nPosições na Cadeia:",str(seq[1]), "\nResposta Correta:", seq[2])
+        output = model.predict([{'sequence':seq[0]}])
+        output = str(output[0][0])
+        correctOne = str(seq[-1])
+        if ("Exon" == correctOne):
+            total[types[correctOne]] += 1
+            if(correctOne == output):
+                hits[types[correctOne]] += 1
+        if ("Neither" == correctOne):
+            total[types[correctOne]] += 1
+            if(correctOne == output):
+                hits[types[correctOne]] += 1            
+        # print("Being Tested:", seq[0],"\nSequence Positions:",str(seq[1]), "\nCorrectly Answer:", seq[2])
         # print(model.predict([{'sequence':seq[0]}]))
 
     for seq in introns[i]:
-        saida = model.predict([{'sequence':seq[0]}])
-        saida = str(saida[0][0])
-        correto = str(seq[-1])
-        if ("Intron" == correto):
-            total[tipos[correto]] += 1
-            if(correto == saida):
-                acertos[tipos[correto]] += 1
-        if ("Neither" == correto):
-            total[tipos[correto]] += 1
-            if(correto == saida):
-                acertos[tipos[correto]] += 1
-        # print("Sendo testado:", seq[0], "\nPosições na Cadeia:", seq[1], "\nResposta Correta:", seq[2])
+        output = model.predict([{'sequence':seq[0]}])
+        output = str(output[0][0])
+        correctOne = str(seq[-1])
+        if ("Intron" == correctOne):
+            total[types[correctOne]] += 1
+            if(correctOne == output):
+                hits[types[correctOne]] += 1
+        if ("Neither" == correctOne):
+            total[types[correctOne]] += 1
+            if(correctOne == output):
+                hits[types[correctOne]] += 1
+        # print("Being Tested:", seq[0], "\nSequence Positions:", seq[1], "\nCorrectly Answer:", seq[2])
         # print(model.predict([{'sequence':seq[0]}]))
 
     i+=1
 
-for i in range(0,len(acuracia)):
-    acuracia[i] = (acertos[i]/total[i]) * 100
+for i in range(0,len(accuracy)):
+    accuracy[i] = (hits[i]/total[i]) * 100
 
-print("Acurácia de Exons:",acuracia[0],"Total:",int(total[0]),"Acertos:",int(acertos[0]))
-print("Acurácia de Introns:",acuracia[1],"Total:",int(total[1]),"Acertos:",int(acertos[1]))
-print("Acurácia de Neithers:",acuracia[2],"Total:",int(total[2]),"Acertos:",int(acertos[2]))
+print("Exons accuracy:",accuracy[0],"Total:",int(total[0]),"hits:",int(hits[0]))
+print("Introns accuracy:",accuracy[1],"Total:",int(total[1]),"hits:",int(hits[1]))
+print("Neithers accuracy:",accuracy[2],"Total:",int(total[2]),"hits:",int(hits[2]))

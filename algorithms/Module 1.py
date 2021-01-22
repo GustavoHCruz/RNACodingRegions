@@ -51,8 +51,8 @@ from Bio import SeqIO
 import pickle # Used for file operations
 # ======================================================
 
-# Genbank archive to be used
-genbank_archive = open("./assets/colletotrichum.gb","r")
+# Genbank archive to be used (you can edit the file name)
+genbank_archive = open("./assets/diaporthe.gb","r")
 
 # Variable that contains all of the processed data
 data = []
@@ -82,6 +82,7 @@ for register in SeqIO.parse(genbank_archive, "genbank"):
         # Append all of the processed data in data variable
         data.append([seq,exons_list,exons,introns_list,introns])
 
-        file = open("./assets/mod1.txt","wb")
+        # Saves the result in the file (you can edit the name of destination file)
+        file = open("./assets/diaporthe_mod1.txt","wb")
         pickle.dump(data,file)
 # ========================================================================================================================

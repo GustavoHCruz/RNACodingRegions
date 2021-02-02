@@ -9,21 +9,33 @@ from sklearn_crfsuite import metrics
 from sklearn.model_selection import cross_val_predict
 # ======================================================
 
+# Import warnings filter
+from warnings import simplefilter
+# Ignore all future warnings
+simplefilter(action='ignore', category=FutureWarning)
+
+
 # Load the model to be tested (you can edit the file name)
-file = open("./results/diaporthe_model.sav", "rb")
+file = open("../../results/colletotrichum_model.sav", "rb")
 clf = pickle.load(file)
 
 # Load the data from module 3. You can edit the file name. Use the data corresponding to the model
-file = open("./assets/diaporthe_mod3.txt", "rb")
+file = open("../assets/colletotrichum_mod3.txt", "rb")
 data = pickle.load(file)
-samples = data[0]
-labels = data[1]
+trainSamples = data[0]
+trainLabels = data[1]
+testSamples = data[2]
+testLabels = data[3]
+
 
 # Cross-validate prediction. Results are printed on the console
-pred = cross_val_predict(clf, samples, labels, cv=10)
-print("Classification Report:")
+pred = clf.predict(testSamples)
+predCV = cross_val_predict(clf, trainSamples, trainLabels, cv=10)
 x = ['Intron', 'Exon', 'Neither']
-metrics.flat_f1_score(labels, pred, average='weighted', labels=x)
+# metrics.flat_f1_score(testLabels, pred, average='weighted', labels=x)
 sorted_labels = sorted(x, key=lambda name: (name[1:], name[0]))
-print(metrics.flat_classification_report(labels, pred, labels=sorted_labels, digits=2))
+print("Classification Report:")
+print(metrics.flat_classification_report(testLabels, pred, labels=sorted_labels, digits=2))
+print("Classification Report CV:")
+print(metrics.flat_classification_report(trainLabels, predCV, labels=sorted_labels, digits=2))
 # ========================================================================================================================

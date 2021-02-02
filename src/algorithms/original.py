@@ -39,7 +39,7 @@ def regFilter(input):
         slice.append(int(match.group(2)))
         slice.append("exon")
         result.append(slice)
-    print(result)
+    # print(result)
 
     return result
 
@@ -99,7 +99,7 @@ def sent2tokens(sent):
     return [token for token, minus2, plus2, label in sent]
 
 # Nome do arquivo a ser lido com as sequencias
-gb_file = "./assets/colletotrichum.gb"
+gb_file = "../assets/colletotrichum.gb"
 
 # Contador de sequências aceitas do arquivo
 c0 = 0
@@ -235,8 +235,9 @@ y_train = [sent2labels(s) for s in listaTags]
 print("CRF 2.0")
 clf = sklearn_crfsuite.CRF(algorithm='lbfgs', c1=0.07, c2=0.09,
                            max_iterations=100, all_possible_transitions=True)
-clf = clf.fit(X_train, y_train)
+# clf = clf.fit(X_train, y_train)
 pred = cross_val_predict(clf, X_train, y_train, cv=10)
+# pred = clf.predict(X_train)
 print("Classification_report:")
 labels = ['NOT-INTRON', 'INTRON']
 metrics.flat_f1_score(y_train, pred, average='weighted', labels=labels)

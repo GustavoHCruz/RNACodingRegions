@@ -5,8 +5,11 @@ import sklearn_crfsuite     # Contains the functions to train, test and make pre
 import random               # Used to generate random numbers
 # ======================================================
 
+# Definitions
+TEST_FRAC = 0.1
+
 # File generated in the previous module (you can edit the file name)
-file = open("./assets/diaporthe_mod2.txt", "rb")
+file = open("../assets/colletotrichum_mod2.txt", "rb")
 data = pickle.load(file)
 
 # Samples is the variable that will contain all the sequences to be analyzed, according to the CRF input specification ([{'sequence': '...'}])
@@ -30,6 +33,7 @@ exonsCount = 0
 # Intron counter found
 intronsCount = 0
 
+
 # While controller
 i=0
 while(i < len(exons)):                              # len(exons) = len(introns) = number of sequences obtained previously
@@ -50,14 +54,31 @@ while(i < len(exons)):                              # len(exons) = len(introns) 
             aux.append([seq[0]])                    # The subsequence is a 'Neither' one and it's appended to aux
     i+=1
 
+# Split the data to 90% train and 10% test
+tenPercent = len(samples) * TEST_FRAC
+testSamples = []
+testLabels = []
+for _ in range(int(tenPercent)):
+    randomNumber = random.randint(0,len(samples)-1)
+    testSamples.append(samples.pop(randomNumber))
+    testLabels.append(labels.pop(randomNumber))
+    
+    
 # To balance the amount of 'Neither' in the base, the average between exons and introns is calculated
-average = (exonsCount + intronsCount)/2
+average_train = (exonsCount + intronsCount)/2
+average_test = average_train * TEST_FRAC
 
 # For the average number of times, take a random aux element and append it to samples, putting 'Neither' in labels
-for i in range(0,int(average)):
+for i in range(int(average_train)):
     randomNumber = random.randint(0,len(aux)-1)
     samples.append([{"sequence":aux[randomNumber]}])
     labels.append(["Neither"])
+    aux.pop(randomNumber)
+
+for i in range(int(average_test)):
+    randomNumber = random.randint(0,len(aux)-1)
+    testSamples.append([{"sequence":aux[randomNumber]}])
+    testLabels.append(["Neither"])
     aux.pop(randomNumber)
 
 # Instance the CRF algorithm
@@ -67,9 +88,9 @@ clf = sklearn_crfsuite.CRF()
 clf = clf.fit(samples, labels)
 
 # Saves the trained model (you can edit the file name)
-pickle.dump(clf, open("./results/diaporthe_model.sav", 'wb'))
+pickle.dump(clf, open("../../results/colletotrichum_model.sav", 'wb'))
 
 # Saves the samples e labels
-file = open("./assets/diaporthe_mod3.txt","wb")
-pickle.dump([samples,labels],file)
+file = open("../assets/colletotrichum_mod3.txt","wb")
+pickle.dump([samples,labels,testSamples,testLabels],file)
 # ========================================================================================================================

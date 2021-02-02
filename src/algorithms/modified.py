@@ -99,7 +99,7 @@ def sent2tokens(sent):
     return [token for token, minus2, plus2, label in sent]
 
 # Nome do arquivo a ser lido com as sequencias
-gb_file = "./assets/colletotrichum.gb"
+gb_file = "../assets/colletotrichum.gb"
 
 # Contador de sequências aceitas do arquivo
 c0 = 0
@@ -237,6 +237,7 @@ clf = sklearn_crfsuite.CRF(algorithm='lbfgs', c1=0.07, c2=0.09,
                            max_iterations=100, all_possible_transitions=True)
 clf = clf.fit(X_train, y_train)
 pred = cross_val_predict(clf, X_train, y_train, cv=10)
+pred = clf.predict(X_train)
 print("Classification_report:")
 labels = ['NOT-INTRON', 'INTRON']
 metrics.flat_f1_score(y_train, pred, average='weighted', labels=labels)

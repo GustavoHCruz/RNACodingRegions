@@ -1,11 +1,11 @@
 # Functions ==============================================================================================================
 # Integers List, Lis of Integers List and String -> String
-# Check if some of the 'PositionsSeq' is equal to the 'ActualSeq' and if true, 'seqType' is returned, otherwise, 'Neither' is returned
+# Check if some of the 'PositionsSeq' is equal to the 'CurrentSeq' and if true, 'seqType' is returned, otherwise, 'Neither' is returned
 # Entry example: [84,93],[[0,61],[103,171],[227,318],[388,469]],'Intron'
 # Output example: 'Neither'
-def verifySeq(PositionsSeq, ActualSeq, seqType):
+def verifySeq(PositionsSeq, CurrentSeq, seqType):
     for i in PositionsSeq:
-        if(i == ActualSeq):
+        if(i == CurrentSeq):
             return seqType
     return 'Neither'
 assert(verifySeq([[0,61],[103,171],[227,318],[388,469]],[84,93],'Intron') == 'Neither')
@@ -20,7 +20,7 @@ import pickle   # Used for file operations
 # ======================================================
 
 # Open the result data from the last module (you can edit the file name)
-file = open("./assets/diaporthe_mod1.txt", "rb")
+file = open("../assets/colletotrichum_mod1.txt", "rb")
 
 # The file that contains all the sequences generated in the module 1
 data = pickle.load(file)
@@ -42,9 +42,9 @@ for i in data:
         auxAG = i[0].find("AG",auxGT+2)         # Find the first AG
         flag = False
         while(auxAG != -1):                     # While AG exists in sequence
-            actualSeq = i[0][auxGT:auxAG+2]
+            CurrentSeq = i[0][auxGT:auxAG+2]
             actualPositionSeq = [auxGT,auxAG+1]
-            auxExternComb.append([actualSeq,actualPositionSeq,verifySeq(i[3],actualPositionSeq,"Intron")])
+            auxExternComb.append([CurrentSeq,actualPositionSeq,verifySeq(i[3],actualPositionSeq,"Intron")])
             auxAG = i[0].find("AG",auxAG+1)     # Find the next AG in sequence, searching from the last AG position plus one
             flag = True
 
@@ -60,13 +60,13 @@ for i in data:
     while(flag):
         auxGT = i[0].find("GT",auxAG+2)
         while(auxGT != -1):
-            actualSeq = i[0][auxAG:auxGT]
+            CurrentSeq = i[0][auxAG:auxGT]
             actualPositionSeq = [auxAG,auxGT-1]
-            auxExternComb.append([actualSeq,actualPositionSeq,verifySeq(i[1],actualPositionSeq,"Exon")])
+            auxExternComb.append([CurrentSeq,actualPositionSeq,verifySeq(i[1],actualPositionSeq,"Exon")])
             auxGT = i[0].find("GT",auxGT+1)
-        actualSeq = i[0][auxAG:]
+        CurrentSeq = i[0][auxAG:]
         actualPositionSeq = [auxAG,len(i[0])-1]
-        auxExternComb.append([actualSeq,actualPositionSeq,verifySeq(i[1],actualPositionSeq,"Exon")])
+        auxExternComb.append([CurrentSeq,actualPositionSeq,verifySeq(i[1],actualPositionSeq,"Exon")])
         auxAG = i[0].find("AG",auxAG)
         if(auxAG == -1):
             flag = False
@@ -78,5 +78,5 @@ for i in data:
 combinations = [exonComb,intronComb]
 
 # Save the result data (you can edit the file name)
-file = open("./assets/diaporthe_mod2.txt","wb")
+file = open("../assets/colletotrichum_mod2.txt","wb")
 pickle.dump(combinations,file)

@@ -6,7 +6,7 @@ import random               # Used to generate random numbers
 # ======================================================
 
 # File generated in the previous module (you can edit the file name)
-file = open("./assets/diaporthe_mod2.txt", "rb")
+file = open("./assets/colletotrichum_mod2.txt", "rb")
 data = pickle.load(file)
 
 # Samples is the variable that will contain all the sequences to be analyzed, according to the CRF input specification ([{'sequence': '...'}])
@@ -56,7 +56,7 @@ average = (exonsCount + intronsCount)/2
 # For the average number of times, take a random aux element and append it to samples, putting 'Neither' in labels
 for i in range(0,int(average)):
     randomNumber = random.randint(0,len(aux)-1)
-    samples.append([{"sequence":aux[randomNumber]}])
+    samples.append([{"sequence":aux[randomNumber][0]}])
     labels.append(["Neither"])
     aux.pop(randomNumber)
 
@@ -67,9 +67,9 @@ clf = sklearn_crfsuite.CRF()
 clf = clf.fit(samples, labels)
 
 # Saves the trained model (you can edit the file name)
-pickle.dump(clf, open("./results/diaporthe_model.sav", 'wb'))
+pickle.dump(clf, open("./results/colletotrichum_model.sav", 'wb'))
 
 # Saves the samples e labels
-file = open("./assets/diaporthe_mod3.txt","wb")
+file = open("./assets/colletotrichum_mod3.txt","wb")
 pickle.dump([samples,labels],file)
 # ========================================================================================================================

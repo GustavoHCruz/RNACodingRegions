@@ -7,6 +7,42 @@ def translation(rna):
             protein += table[rna[start:start+3]]
     return protein
 
-rna = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"
+import pickle
 
-print(translation(rna))
+file = open("./results/colletotrichum_model.sav", "rb")
+clf = pickle.load(file)
+
+seq = "CGGTGATGATGCGCCCAGAGCTGTCTTCCGTAAGTCTTCCCATCCGCAGACCGCAATCCGCCCCTTCAGGGGGGACTCAAATTTGCGGTCATCCAAACCGGGTGTGCTGTCGATACTAACCACCACGTAGCCTCCATTGTCGGTCGCCCTCGCCACCATGGGTATGTCTACTTCTCGCCCTCGCTGCGGTAATTTCCGCCCTCCGCGCCGCGATCTAACATGTGAATCAGTATCATGATTGGT"
+
+flag = True
+intronComb = []
+auxGT = 0
+auxAG = 0
+
+intronComb = []
+auxGT = seq.find("GT")
+while(auxGT != -1):
+    auxAG = seq.find("AG",auxGT+2)
+    flag = False
+    while(auxAG != -1):
+        actualSeq = seq[auxGT:auxAG+2]
+        if(['Intron'] == clf.predict_single([{'sequence':actualSeq}])):
+            intronComb.append([actualSeq])
+
+        auxAG = seq.find("AG",auxAG+1)
+        flag = True
+
+    auxGT = seq.find("GT",auxGT+1)
+
+for intron in intronComb:
+    seq = seq.replace(intron[0],"")
+
+seq = seq.replace("T","U")
+
+while(True):
+    if(len(seq)%3 != 0):
+        seq = seq[0:-1]
+    else:
+        break
+
+print(translation(seq))

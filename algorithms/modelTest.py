@@ -1,6 +1,6 @@
 # Main ===================================================================================================================
 # Libraries and importations ===========================
-import pickle               # Used for file operations
+import pickle   # Used for file operations
 
 # Metrics is used to generate the final statistics on the trained model
 from sklearn_crfsuite import metrics
@@ -10,11 +10,11 @@ from sklearn.model_selection import cross_val_predict
 # ======================================================
 
 # Load the model to be tested (you can edit the file name)
-file = open("./results/diaporthe_model.sav", "rb")
+file = open("./results/colletotrichum_model.sav", "rb")
 clf = pickle.load(file)
 
 # Load the data from module 3. You can edit the file name. Use the data corresponding to the model
-file = open("./assets/diaporthe_mod3.txt", "rb")
+file = open("./assets/colletotrichum_mod3.txt", "rb")
 data = pickle.load(file)
 samples = data[0]
 labels = data[1]

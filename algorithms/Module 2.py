@@ -20,7 +20,7 @@ import pickle   # Used for file operations
 # ======================================================
 
 # Open the result data from the last module (you can edit the file name)
-file = open("./assets/diaporthe_mod1.txt", "rb")
+file = open("./assets/colletotrichum_mod1.txt", "rb")
 
 # The file that contains all the sequences generated in the module 1
 data = pickle.load(file)
@@ -40,13 +40,11 @@ for i in data:
     auxGT = i[0].find("GT")                     # Find the first GT
     while(auxGT != -1):                         # While GT exists in sequence
         auxAG = i[0].find("AG",auxGT+2)         # Find the first AG
-        flag = False
         while(auxAG != -1):                     # While AG exists in sequence
             actualSeq = i[0][auxGT:auxAG+2]
             actualPositionSeq = [auxGT,auxAG+1]
             auxExternComb.append([actualSeq,actualPositionSeq,verifySeq(i[3],actualPositionSeq,"Intron")])
             auxAG = i[0].find("AG",auxAG+1)     # Find the next AG in sequence, searching from the last AG position plus one
-            flag = True
 
         auxGT = i[0].find("GT",auxGT+1)         # Find the next GT in sequence, searching from the last GT position plus one
 
@@ -78,5 +76,5 @@ for i in data:
 combinations = [exonComb,intronComb]
 
 # Save the result data (you can edit the file name)
-file = open("./assets/diaporthe_mod2.txt","wb")
+file = open("./assets/colletotrichum_mod2.txt","wb")
 pickle.dump(combinations,file)

@@ -6,7 +6,7 @@ import random               # Used to generate random numbers
 # ======================================================
 
 # Definitions
-TEST_FRAC = 0.1
+TEST_FRAC = 0.3
 
 # File generated in the previous module (you can edit the file name)
 file = open("../assets/colletotrichum_mod2.txt", "rb")

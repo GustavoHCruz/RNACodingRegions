@@ -29,11 +29,11 @@ def predictResult(seq):
 # ================================================================================================
 
 # Load the model to be tested (you can edit the file name)
-file = open("./results/diaporthe_model.sav", "rb")
+file = open("./results/colletotrichum_model.sav", "rb")
 clf = pickle.load(file)
 
 # Load the data from module 1. You can edit the file name
-file = open("./assets/diaporthe_mod1.txt", "rb")
+file = open("./assets/colletotrichumOnlyAfter2020_mod1.txt", "rb")
 data = pickle.load(file)
 
 total = 0
@@ -50,4 +50,4 @@ for seq in data:
         hits += 1
 
 print("Hits:"+str(hits),"\nTotal:"+str(total))
-print("Result:",(hits/total)*100)
+print("Result:"+str((hits/total)*100))

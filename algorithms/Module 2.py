@@ -20,7 +20,7 @@ import pickle   # Used for file operations
 # ======================================================
 
 # Open the result data from the last module (you can edit the file name)
-file = open("./assets/colletotrichum_mod1.txt", "rb")
+file = open("./assets/colletotrichumAtt_mod1.txt", "rb")
 
 # The file that contains all the sequences generated in the module 1
 data = pickle.load(file)
@@ -76,5 +76,5 @@ for i in data:
 combinations = [exonComb,intronComb]
 
 # Save the result data (you can edit the file name)
-file = open("./assets/colletotrichum_mod2.txt","wb")
+file = open("./assets/colletotrichumAtt_mod2.txt","wb")
 pickle.dump(combinations,file)

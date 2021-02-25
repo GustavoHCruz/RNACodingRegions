@@ -3,7 +3,7 @@ table = {'UUU':'F','CUU':'L','AUU':'I','GUU':'V','UUC':'F','CUC':'L','AUC':'I','
 def translation(rna):
     protein = ""
     for start in range(0,len(rna),3):
-        if table[rna[start:start+3]] != "Stop":
+        if (len(rna[start:start+3]) == 3 and table[rna[start:start+3]] != "Stop"):
             protein += table[rna[start:start+3]]
     return protein
 
@@ -12,7 +12,9 @@ import pickle
 file = open("./results/colletotrichum_model.sav", "rb")
 clf = pickle.load(file)
 
-seq = "CGGTGATGATGCGCCCAGAGCTGTCTTCCGTAAGTCTTCCCATCCGCAGACCGCAATCCGCCCCTTCAGGGGGGACTCAAATTTGCGGTCATCCAAACCGGGTGTGCTGTCGATACTAACCACCACGTAGCCTCCATTGTCGGTCGCCCTCGCCACCATGGGTATGTCTACTTCTCGCCCTCGCTGCGGTAATTTCCGCCCTCCGCGCCGCGATCTAACATGTGAATCAGTATCATGATTGGT"
+seq = "gttttcccacccgcagaccgcaacctgccccccaaaagggggcaatcaacacttgtgatctttcatcgaaggacaagtaaaaactgaccatgttttattttagcctccattgtcggtcgacctcgccaccatgggtatgtatccctccgtgatcgttacggtaaccctaccctcggagccgccgcctaacatgtgaacagtatcatgattggtatgggcca"
+
+seq = seq.upper()
 
 flag = True
 intronComb = []
@@ -34,15 +36,18 @@ while(auxGT != -1):
 
     auxGT = seq.find("GT",auxGT+1)
 
+print("Foram encontrados",len(intronComb),"Introns na sequência:")
+
+for intron in intronComb:
+    pos = seq.find(intron[0])
+    print("Posição do Intron na sequência:",pos,"-",pos+len(intron[0]))
+    print("Intron:",intron[0])
 for intron in intronComb:
     seq = seq.replace(intron[0],"")
 
+print("\nSequência final:",seq)
 seq = seq.replace("T","U")
-
-while(True):
-    if(len(seq)%3 != 0):
-        seq = seq[0:-1]
-    else:
-        break
-
-print(translation(seq))
+print("\nTradução:",translation(seq))
+print("Tradução +1:",translation(seq[1:]))
+print("Tradução +2:",translation(seq[2:]))
+print("Tradução +3:",translation(seq[3:]))

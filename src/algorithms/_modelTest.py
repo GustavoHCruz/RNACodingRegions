@@ -35,7 +35,7 @@ pred = clf.predict(testSamples)
 x = ['III', 'IIE', 'IEE', 'EEE', 'EEI', 'EII']
 # metrics.flat_f1_score(testLabels, pred, average='weighted', labels=x)
 sorted_labels = sorted(x, key=lambda name: (name[1:], name[0]))
-# print(pred)
+print(pred)
 print("Classification Report:")
 print(metrics.flat_classification_report(testLabels, pred, labels=sorted_labels, digits=2))
 # print("Classification Report CV:")

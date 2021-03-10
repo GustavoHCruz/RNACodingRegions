@@ -2,11 +2,8 @@
 # Libraries and importations ===========================
 import pickle               # Used for file operations
 import sklearn_crfsuite     # Contains the functions to train, test and make predictions with the model
-import random               # Used to generate random numbers
 # ======================================================
 
-# Definitions
-TEST_FRAC = 0.2
 
 # File generated in the previous module (you can edit the file name)
 file = open("../assets/colletotrichum_mod2.txt", "rb")
@@ -14,32 +11,26 @@ data = pickle.load(file)
 
 # Samples is the variable that will contain all the sequences to be analyzed, according to the CRF input specification ([{'sequence': '...'}])
 samples = []
+testSamples = []
 
 # Labels is the variable that will contain all the sequences answers, for example, for samples[0], labels[0] can be or 'Exon', or 'Intron' or 'Neither'
 labels = []
+testLabels = []
 
-# The aux is the variable that will contain all the sequences of 'Neither'
-aux = []
 
-# The data[0] are all Exon sequences obtained in the last module. It is stored in the exons variable
-exons = data[0]
+combs = data[0]
+testCombs = data[1]
 
-# The data[1] are all Intron sequences obtained in the last module. It is stored in the introns variable
-introns = data[1]
+testCombs = sorted(testCombs, key=lambda k: (k[3], k[4]))
 
-codonsIII = data[2]
-codonsIIE = data[3]
-codonsIEE = data[4]
-codonsEEE = data[5]
-codonsEEI = data[6]
-codonsEII = data[7]
-
-for codon in codonsIII + codonsIIE + codonsIEE + codonsEEE + codonsEEI + codonsEII + codonsIII:
+for codon in combs:
     samples.append([{"codon": codon[0], "codon-1": codon[1], "codon+1": codon[2]}])
     labels.append([codon[-1]])
 
-# print(samples)
-# print(labels)
+for codon in testCombs:
+    testSamples.append([{"codon": codon[0], "codon-1": codon[1], "codon+1": codon[2], "seqIndex": codon[3], "codonIndex": codon[4]}])
+    testLabels.append([codon[-1]])
+
 
 # # Exon counter found
 # exonsCount = 0
@@ -68,14 +59,7 @@ for codon in codonsIII + codonsIIE + codonsIEE + codonsEEE + codonsEEI + codonsE
 #             aux.append([seq[0]])                    # The subsequence is a 'Neither' one and it's appended to aux
 #     i+=1
 
-# Split the data to 90% train and 10% test
-tenPercent = len(samples) * TEST_FRAC
-testSamples = []
-testLabels = []
-for _ in range(int(tenPercent)):
-    randomNumber = random.randint(0,len(samples)-1)
-    testSamples.append(samples.pop(randomNumber))
-    testLabels.append(labels.pop(randomNumber))
+
     
 
 # print(samples)

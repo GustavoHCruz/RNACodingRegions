@@ -9,12 +9,14 @@ def translation(rna):
 
 import pickle
 
-file = open("./results/colletotrichum_model.sav", "rb")
+file = open("./results/diaporthe_model.sav", "rb")
 clf = pickle.load(file)
 
-seq = "gttttcccacccgcagaccgcaacctgccccccaaaagggggcaatcaacacttgtgatctttcatcgaaggacaagtaaaaactgaccatgttttattttagcctccattgtcggtcgacctcgccaccatgggtatgtatccctccgtgatcgttacggtaaccctaccctcggagccgccgcctaacatgtgaacagtatcatgattggtatgggcca"
+originalSeq = "CGGTGCTGCTTTCTGGTGCGTACCASCTCCAGCTCCGAGCCTACCACCGCGATGATCGACGCGCGACAAGGCGAGCTCGAAGCATCGATACTGACCTCGGTTCTTTAGGCAAACAATCTCTGGCGAGCACGGTCTCAACAGCAATGGSRTGTATGTACCTCCTATTCCCTGACTACTGACCTCGGCCTCTCCTCCGGSTTGGGACTGACGATSGCACAGTTACAACGGCACTTCCGAACTCCAACTCGAGCGCATGAACATCTACTTCAACGAGGTAAGTCAATAGCCACGTCGTCRATTCKAGTTTGACCCTCTCGGCATGGGTGACTGCCGCCGCCAAACCCTTGCTAACGCGTTCTCGCCCAGGCCTCCGGCAACAAGTATGTGCCCCGCGCCGTCCTCGTCGATCTCGA"
 
-seq = seq.upper()
+
+originalSeq = originalSeq.upper()
+seq = originalSeq
 
 flag = True
 intronComb = []
@@ -45,9 +47,19 @@ for intron in intronComb:
 for intron in intronComb:
     seq = seq.replace(intron[0],"")
 
-print("\nSequência final:",seq)
+aux = originalSeq
+exonComb = []
+for intron in intronComb:
+    aux = aux.split(intron[0])
+    exonComb.append(aux[0])
+    aux = aux[1]
+exonComb.append(aux)
+print("\nForam encontrados",len(exonComb),"Exons na sequência:")
+for exon in exonComb:
+    print("Exon:",exon)
+
+print("\nSequência pós splicing:",seq)
 seq = seq.replace("T","U")
 print("\nTradução:",translation(seq))
 print("Tradução +1:",translation(seq[1:]))
 print("Tradução +2:",translation(seq[2:]))
-print("Tradução +3:",translation(seq[3:]))

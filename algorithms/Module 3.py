@@ -6,7 +6,7 @@ import random               # Used to generate random numbers
 # ======================================================
 
 # File generated in the previous module (you can edit the file name)
-file = open("./assets/colletotrichumAtt_mod2.txt", "rb")
+file = open("./assets/actin_mod2.txt", "rb")
 data = pickle.load(file)
 
 # Samples is the variable that will contain all the sequences to be analyzed, according to the CRF input specification ([{'sequence': '...'}])
@@ -67,9 +67,9 @@ clf = sklearn_crfsuite.CRF()
 clf = clf.fit(samples, labels)
 
 # Saves the trained model (you can edit the file name)
-pickle.dump(clf, open("./results/colletotrichumAtt_model.sav", 'wb'))
+pickle.dump(clf, open("./results/actin_model.sav", 'wb'))
 
 # Saves the samples e labels
-file = open("./assets/colletotrichumAtt_mod3.txt","wb")
+file = open("./assets/actin_mod3.txt","wb")
 pickle.dump([samples,labels],file)
 # ========================================================================================================================

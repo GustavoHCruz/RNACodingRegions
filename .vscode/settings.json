@@ -7,8 +7,6 @@
         "**/node_modules": true
     },
     "workbench.tree.indent": 18,
-    "workbench.tree.renderIndentGuides": "always"
-},
-{
+    "workbench.tree.renderIndentGuides": "always",
     "python.pythonPath": "C:\\Users\\Gusta\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe"
 }

@@ -16,16 +16,14 @@ simplefilter(action='ignore', category=FutureWarning)
 
 
 # Load the model to be tested (you can edit the file name)
-file = open("../../results/colletotrichum_model.sav", "rb")
+file = open("../../results/diaporthe_model.sav", "rb")
 clf = pickle.load(file)
 
 # Load the data from module 3. You can edit the file name. Use the data corresponding to the model
-file = open("../assets/colletotrichum_mod3.txt", "rb")
+file = open("../assets/diaporthe_mod3.txt", "rb")
 data = pickle.load(file)
-trainSamples = data[0]
-trainLabels = data[1]
-testSamples = data[2]
-testLabels = data[3]
+testSamples = data[0]
+testLabels = data[1]
 
 
 # Cross-validate prediction. Results are printed on the console
@@ -35,7 +33,9 @@ pred = clf.predict(testSamples)
 x = ['III', 'IIE', 'IEE', 'EEE', 'EEI', 'EII']
 # metrics.flat_f1_score(testLabels, pred, average='weighted', labels=x)
 sorted_labels = sorted(x, key=lambda name: (name[1:], name[0]))
-print(pred)
+# print(pred)
+for k in range(100):
+    print(testLabels[k], pred[k])
 print("Classification Report:")
 print(metrics.flat_classification_report(testLabels, pred, labels=sorted_labels, digits=2))
 # print("Classification Report CV:")

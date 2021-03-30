@@ -52,7 +52,7 @@ import pickle # Used for file operations
 # ======================================================
 
 # Genbank archive to be used (you can edit the file name)
-genbank_archive = open("../assets/colletotrichum.gb","r")
+genbank_archive = open("../assets/diaporthe.gb","r")
 
 # Variable that contains all of the processed data
 data = []
@@ -63,7 +63,6 @@ for register in SeqIO.parse(genbank_archive, "genbank"):
     if(register.features[-1].type == "CDS"):
         # Transform the sequence of the register to a String type
         seq = str(register.seq)
-        print(seq)
 
         # Create the exons list from the genbank register
         exons_list = make_exons_list(register.features[-1].location)
@@ -82,10 +81,8 @@ for register in SeqIO.parse(genbank_archive, "genbank"):
 
         # Append all of the processed data in data variable
         data.append([seq,exons_list,exons,introns_list,introns])
-        print(exons_list)
-        print(exons)
 
         # Saves the result in the file (you can edit the name of destination file)
-        file = open("../assets/colletotrichum_mod1.txt","wb")
+        file = open("../assets/diaporthe_mod1.txt","wb")
         pickle.dump(data,file)
 # ========================================================================================================================

@@ -22,7 +22,7 @@ import pickle   # Used for file operations
 TEST_FRAC = 0.2
 
 # Open the result data from the last module (you can edit the file name)
-file = open("../assets/colletotrichum_mod1.txt", "rb")
+file = open("../assets/diaporthe_mod1.txt", "rb")
 
 # The file that contains all the sequences generated in the module 1
 data = pickle.load(file)
@@ -30,6 +30,8 @@ data = pickle.load(file)
 # Declarations of variables that will be used in the algorithm
 combs = []
 testCombs = []
+testExonList = []
+testIntronList = []
 
 # Split the data between train and test
 tenPercent = len(data) * TEST_FRAC
@@ -45,17 +47,10 @@ for _ in range(int(tenPercent)):
 #   Codon-1
 #   Codon+1
 
-# i = data[0] # Static
 for i in range(len(data)):
     seq = data[i][0]
     exons_list = data[i][1]
 
-    # for j in range(len(seq)//3):
-    #     codon = seq[3*j:3*(j+1)]
-    #     codon_prev = seq[3*(j-1):3*j]
-    #     codon_next = seq[3*(j+1):3*(j+2)]
-    #     codon_label = ""
-    #     for k in range(3*j,3*(j+1)):
     for j in range(len(seq)-2):
         codon = seq[j:j+3]
         codon_prev = seq[j-3:j]
@@ -71,6 +66,10 @@ for i in range(len(data)):
 for i in range(len(testData)):
     seq = testData[i][0]
     exons_list = testData[i][1]
+    introns_list = testData[i][3]
+
+    testExonList.append(exons_list)
+    testIntronList.append(introns_list)
 
     for j in range(len(seq)-2):
         codon = seq[j:j+3]
@@ -84,26 +83,9 @@ for i in range(len(testData)):
 
         testCombs.append(codonComb)
 
-        # if codon_label == "III":
-        #     IIIComb.append(codonComb)
-        # elif codon_label == "IIE":
-        #     IIEComb.append(codonComb)
-        # elif codon_label == "IEE":
-        #     IEEComb.append(codonComb)
-        # elif codon_label == "EEE":
-        #     EEEComb.append(codonComb)
-        # elif codon_label == "EEI":
-        #     EEIComb.append(codonComb)
-        # elif codon_label == "EII":
-        #     EIIComb.append(codonComb)
 
-        # print(codon, codon_prev, codon_next, codon_label)
-
-
-
-# Append both exonComb and intronComb on combinations
-combinations = [combs, testCombs]
+data = [combs, testCombs, testExonList, testIntronList]
 
 # Save the result data (you can edit the file name)
-file = open("../assets/colletotrichum_mod2.txt","wb")
-pickle.dump(combinations,file)
+file = open("../assets/diaporthe_mod2.txt","wb")
+pickle.dump(data,file)
